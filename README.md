@@ -75,6 +75,11 @@ session=$(loginctl | grep -v 'tty' | awk '/$username/ { print $1 }')
 loginctl lock-session $session
 ```
 
+Mark the script as executable:
+```bash
+chmod 755 /usr/local/bin/lockscreen.sh
+```
+
 Check that the script works by running it (either as root as your own user. udev RUN commands are executed by root, so it should work as root).
 
 If everythin works as desired, let's reload udev: 
