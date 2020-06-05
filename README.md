@@ -58,12 +58,12 @@ I also wanted to lock my screen the moment my yubikey is removed from the USB po
 
 The udev rule in `/etc/udev/rules.d/20-yubico-u2f.rules`:
 ```
-ACTION=="remove", ENV{ID_BUS}=="usb", ENV{ID_MODEL_ID}=="0407", ENV{ID_VENDOR_ID}=="1050", RUN+="/usr/local/bin/lockscreen.sh"
+ACTION=="remove", ENV{ID_BUS}=="usb", ENV{ID_MODEL_ID}=="0407", ENV{ID_VENDOR_ID}=="1050", RUN+="/usr/local/sbin/lockscreen.sh"
 ```
 
 Check your `MODEL_ID` and `VENDOR_ID` by running `udevadm monitor --environment --udev` and unplugging your yubikey. 
 
-Then, create `/usr/local/bin/lockscreen.sh` where `$username` is your own username:
+Then, create `/usr/local/sbin/lockscreen.sh` where `$username` is your own username:
 
 ```bash
 #!/bin/bash
@@ -75,12 +75,12 @@ loginctl lock-sessions
 
 Mark the script as executable:
 ```bash
-chmod 755 /usr/local/bin/lockscreen.sh
+chmod 755 /usr/local/sbin/lockscreen.sh
 ```
 
 Check that the script works by running it (either as root as your own user. udev RUN commands are executed by root, so it should work as root).
 
-If everythin works as desired, let's reload udev: 
+If everything works as desired, let's reload udev: 
 
 ```bash
 sudo udevadm control --reload-rules
