@@ -39,11 +39,11 @@ auth required pam_u2f.so cue
 ```
 
 ### Sudo specific
-In order to only require yubikey for sudo, I've modified `/etc/pam.d/sudo`. I've commented out `@include common-auth` because I don't want the pam_u2f requirement, and have added the yubikey line. It looks as follows:
+In order to only require yubikey for sudo, I've modified `/etc/pam.d/sudo`. Insert the u2f line above the inclusion of `@common-auth` so touching the yubikey will suffice. Add `cue` to receive visual feedback.
 
 ```
-#@include common-auth
 auth   sufficient pam_u2f.so cue
+@include common-auth
 ```
 
 Obviously, leave the rest of the file untouched.
@@ -63,7 +63,7 @@ ACTION=="remove", ENV{ID_BUS}=="usb", ENV{ID_MODEL_ID}=="0407", ENV{ID_VENDOR_ID
 
 Check your `MODEL_ID` and `VENDOR_ID` by running `udevadm monitor --environment --udev` and unplugging your yubikey. 
 
-Then, create `/usr/local/sbin/lockscreen.sh` where `$username` is your own username:
+Then, create `/usr/local/sbin/lockscreen.sh` with the following content:
 
 ```bash
 #!/bin/bash
